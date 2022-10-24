@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{{define "signup"}}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+</head>
+<body>
+<h1>Sign up</h1>
+<form method="post" action="/signup">
+    <label>
+        login
+        <input name="login" type="text">
+    </label>
+    </br>
+    <label>
+        password
+        <input name="password" type="password">
+    </label>
+    </br>
+    <button type="submit">Sign up</button>
+    <br>
+    <a href="/login">Log in</a>
+</form>
+</body>
+</html>
+{{end}}
