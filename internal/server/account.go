@@ -19,12 +19,6 @@ func (s *Server) getAccountPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//t := template.Must(template.New("account").ParseGlob("templates/*.html"))
-	//log.Println("here", csrf.TemplateField(r))
-	//t.ExecuteTemplate(w, "account", map[string]interface{}{
-	//	"username":       username,
-	//	csrf.TemplateTag: csrf.TemplateField(r),
-	//})
 	s.render.HTML(w, http.StatusOK, "account", map[string]interface{}{
 		csrf.TemplateTag: csrf.TemplateField(r),
 		"username":       username,
