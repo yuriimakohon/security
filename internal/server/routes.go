@@ -1,9 +1,9 @@
 package server
 
 import (
-	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
 	"net/http"
+	"security/pkg/csrf"
 )
 
 func (s *Server) initRoutes() http.Handler {
@@ -17,7 +17,7 @@ func (s *Server) initRoutes() http.Handler {
 
 	r.HandleFunc("/logout", s.logout).Methods(http.MethodPost)
 
-	CSRF := csrf.Protect(s.cfg.CSRFKey, csrf.Secure(false))
+	CSRF := csrf.SimpleProtect(s.cfg.CSRFKey)
 	r.Handle("/account", CSRF(http.HandlerFunc(s.getAccountPage))).Methods(http.MethodGet)
 	// This is vulnerable to CSRF attack
 	r.HandleFunc("/account/insecure", s.changeUsername).Methods(http.MethodPost)

@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/gorilla/csrf"
 	"net/http"
+	"security/pkg/csrf"
 )
 
 func (s *Server) getAccountPage(w http.ResponseWriter, r *http.Request) {
