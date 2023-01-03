@@ -8,22 +8,23 @@ import (
 	"github.com/gorilla/securecookie"
 )
 
+// store interface manage storage of csrf-token
 type store interface {
 	Get(*http.Request) ([]byte, error)
 	Save(token []byte, w http.ResponseWriter) error
 }
 
+// cookieStore is default(and only one, because store is not exported) cookie-based implementation of store
 type cookieStore struct {
 	name     string
 	maxAge   int
 	secure   bool
 	httpOnly bool
-	path     string
-	domain   string
 	sc       *securecookie.SecureCookie
 	sameSite gcsrf.SameSiteMode
 }
 
+// Get decoded csrf-token from SecureCookie
 func (cs *cookieStore) Get(r *http.Request) ([]byte, error) {
 	cookie, err := r.Cookie(cs.name)
 	if err != nil {
@@ -39,6 +40,7 @@ func (cs *cookieStore) Get(r *http.Request) ([]byte, error) {
 	return token, nil
 }
 
+// Save encoded token to SecureCookie
 func (cs *cookieStore) Save(token []byte, w http.ResponseWriter) error {
 	encoded, err := cs.sc.Encode(cs.name, token)
 	if err != nil {
@@ -52,8 +54,6 @@ func (cs *cookieStore) Save(token []byte, w http.ResponseWriter) error {
 		HttpOnly: cs.httpOnly,
 		Secure:   cs.secure,
 		SameSite: http.SameSite(cs.sameSite),
-		Path:     cs.path,
-		Domain:   cs.domain,
 	}
 
 	if cs.maxAge > 0 {

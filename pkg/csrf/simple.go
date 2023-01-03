@@ -47,7 +47,7 @@ type csrf struct {
 	st store
 }
 
-// SimpleProtect provides simple csrf middleware. That's mean DefaultMode for SameSite, always secure mode.
+// SimpleProtect provides simple csrf middleware. That's mean DefaultMode for SameSite, always secure mode and "/" path
 func SimpleProtect(authKey []byte) func(http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
 		cs := new(csrf)
@@ -75,6 +75,7 @@ func SimpleProtect(authKey []byte) func(http.Handler) http.Handler {
 }
 
 func (cs *csrf) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// Get or create csrf token from request
 	realToken, err := cs.st.Get(r)
 	if err != nil || len(realToken) != tokenLength {
 		realToken, err = generateRandomBytes(tokenLength)
@@ -90,7 +91,8 @@ func (cs *csrf) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	r = contextSave(r, tokenKey, mask(realToken, r))
+	// save token key and csrf form field name in context to retrieve them in TemplateField()
+	r = contextSave(r, tokenKey, mask(realToken))
 	r = contextSave(r, formKey, fieldName)
 
 	if !contains(safeMethods, r.Method) {
@@ -140,7 +142,7 @@ func unauthorizedHandler(w http.ResponseWriter, r *http.Request, err error) {
 	return
 }
 
-func mask(realToken []byte, r *http.Request) string {
+func mask(realToken []byte) string {
 	otp, err := generateRandomBytes(tokenLength)
 	if err != nil {
 		return ""
