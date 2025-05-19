@@ -7,7 +7,7 @@ services:
       - kerbnet
     ports:
       - "88:88"
-      - "749:749" # admin port
+      - "749:749"
 
   client:
     build: ./client
