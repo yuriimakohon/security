@@ -1,11 +1,11 @@
 package main
 
 import (
+	"api/internal/repositories/postgres"
+	"api/internal/server"
+	"api/internal/user"
 	"context"
 	"log"
-	"security/internal/repositories/postgres"
-	"security/internal/server"
-	"security/internal/user"
 )
 
 func main() {

@@ -53,6 +53,7 @@ func SimpleProtect(authKey []byte) func(http.Handler) http.Handler {
 		cs := new(csrf)
 		cs.h = h
 
+		// Lazy init of secureCookie
 		if cs.sc == nil {
 			cs.sc = securecookie.New(authKey, nil)
 			cs.sc.SetSerializer(securecookie.JSONEncoder{})

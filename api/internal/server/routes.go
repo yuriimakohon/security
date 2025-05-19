@@ -1,9 +1,10 @@
 package server
 
 import (
+	"api/pkg/csrf"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"net/http"
-	"security/pkg/csrf"
 )
 
 func (s *Server) initRoutes() http.Handler {
@@ -24,5 +25,16 @@ func (s *Server) initRoutes() http.Handler {
 	// This is protected from CSRF attack
 	r.Handle("/account/secure", CSRF(http.HandlerFunc(s.changeUsername))).Methods(http.MethodPost)
 
-	return r
+	r.HandleFunc("/card", s.getCardInfo).Methods(http.MethodGet)
+
+	configuredCORS := cors.New(
+		cors.Options{
+			AllowedOrigins: []string{"http://localhost:8080"},
+			Debug:          true,
+		},
+	)
+	//configuredCORS := cors.AllowAll()
+
+	corsHandler := configuredCORS.Handler(r)
+	return corsHandler
 }

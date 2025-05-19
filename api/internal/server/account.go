@@ -1,8 +1,8 @@
 package server
 
 import (
+	"api/pkg/csrf"
 	"net/http"
-	"security/pkg/csrf"
 )
 
 func (s *Server) getAccountPage(w http.ResponseWriter, r *http.Request) {
@@ -54,4 +54,21 @@ func (s *Server) changeUsername(w http.ResponseWriter, r *http.Request) {
 	session.Values["username"] = username
 	session.Save(r, w)
 	http.Redirect(w, r, "/account", http.StatusSeeOther)
+}
+
+func (s *Server) getCardInfo(w http.ResponseWriter, r *http.Request) {
+	//if !s.isAuthenticated(r) {
+	//	http.Redirect(w, r, "/login", http.StatusSeeOther)
+	//	return
+	//}
+
+	cardInfo, err := s.userService.GetCardInfo()
+	if err != nil {
+		s.render.String(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"cardInfo": "` + cardInfo + `"}`))
 }

@@ -1,8 +1,8 @@
 package server
 
 import (
+	"api/internal/user"
 	"net/http"
-	"security/internal/user"
 )
 
 func (s *Server) getSignupPage(w http.ResponseWriter, r *http.Request) {

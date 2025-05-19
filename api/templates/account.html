@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{{define "account"}}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Info</title>
+</head>
+<body>
+<h1>Info</h1>
+<ul>
+    <li>Username: {{.username}}</li>
+</ul>
+<form method="post" action="/account/secure">
+    <label>
+        Change username:
+        <input name="username" type="text">
+    </label>
+    {{.csrfField}}
+    <button type="submit">Update</button>
+</form>
+<form method="post" action="/logout">
+    <button type="submit">Log out</button>
+</form>
+<button id="get_card_info_btn">Show card info</button>
+<div id="card_info_display"></div>
+<script>
+  document.getElementById('get_card_info_btn').addEventListener('click', () => {
+    fetch('http://localhost:9000/card') // Replace with your URL
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('card_info_display').innerText = 'Card number: ' + data.cardInfo;
+        })
+        .catch(error => {
+          document.getElementById('card_info_display').innerText = 'Error: ' + error;
+        });
+  });
+</script>
+</body>
+</html>
+{{end}}

@@ -1,12 +1,12 @@
 package server
 
 import (
+	"api/internal/user"
 	"github.com/goombaio/namegenerator"
 	"github.com/gorilla/sessions"
 	"github.com/thedevsaddam/renderer"
 	"log"
 	"net/http"
-	"security/internal/user"
 	"time"
 )
 

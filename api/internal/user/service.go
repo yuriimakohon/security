@@ -38,3 +38,7 @@ func (s *Service) CheckPassword(login, password string) (bool, error) {
 func (s *Service) UpdateUsername(login, username string) error {
 	return s.repo.UpdateUsername(login, username)
 }
+
+func (s *Service) GetCardInfo() (string, error) {
+	return "777-777-777", nil
+}
