@@ -57,11 +57,6 @@ func (s *Server) changeUsername(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) getCardInfo(w http.ResponseWriter, r *http.Request) {
-	//if !s.isAuthenticated(r) {
-	//	http.Redirect(w, r, "/login", http.StatusSeeOther)
-	//	return
-	//}
-
 	cardInfo, err := s.userService.GetCardInfo()
 	if err != nil {
 		s.render.String(w, http.StatusInternalServerError, err.Error())

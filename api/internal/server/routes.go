@@ -29,8 +29,10 @@ func (s *Server) initRoutes() http.Handler {
 
 	configuredCORS := cors.New(
 		cors.Options{
-			AllowedOrigins: []string{"http://localhost:8080"},
-			Debug:          true,
+			AllowedOrigins: []string{
+				"http://localhost:63342", // Hosted fraud page
+			},
+			Debug: true,
 		},
 	)
 	//configuredCORS := cors.AllowAll()
