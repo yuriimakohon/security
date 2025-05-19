@@ -1,9 +1,33 @@
-version: '3'
-
 services:
+  kdc:
+    build: ./kdc
+    container_name: kdc
+    hostname: kdc.localdomain.test
+    networks:
+      - kerbnet
+    ports:
+      - "88:88"
+      - "749:749" # admin port
+
+  client:
+    build: ./client
+    container_name: kerberos-client
+    hostname: client.localdomain.test
+    networks:
+      - kerbnet
+    depends_on:
+      - kdc
+    volumes:
+      - ./kdc/krb5.conf:/etc/krb5.conf:ro
+    stdin_open: true
+    tty: true
+
   postgres:
     image: postgres
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5439:5432"
+
+networks:
+  kerbnet:
